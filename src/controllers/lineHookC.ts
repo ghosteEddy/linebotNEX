@@ -29,7 +29,7 @@ const lineHook = async (req: Request, res: Response, next: NextFunction) => {
         return
     }
 
-    if (await validator.verifyLineWebhookSignature(req) == true) {
+    if (await validator.verifyLineWebhookSignature(req, oaSecret) == true) {
         const lineUser: string = data.events[0].source.userId
         const bid: Buffer = await lineHookS.userHandler(lineUser)
 
