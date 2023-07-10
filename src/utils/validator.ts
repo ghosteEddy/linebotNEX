@@ -23,8 +23,4 @@ const verifyLineWebhookSignature = async (req: Request, messagingSecret: string 
     }
 }
 
-const verifyOAClient = async (req: Request) => {
-    let channel
-}
-
 export default { verifyLineWebhookSignature }
