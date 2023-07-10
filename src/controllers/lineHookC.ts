@@ -26,6 +26,14 @@ const lineHook = async (req: Request, res: Response, next: NextFunction) => {
                 break
             case "postback":
                 lineHookS.logActivity(bid, "postback")
+
+
+                // TODO: seperate this later
+                switch (data.events[0].postback?.data) {
+                    case "pre-register":
+                        lMessage.replyPreRegisterForm(String(data.events[0].replyToken), lineUser)
+                }
+
                 // assign approrpriately
                 break
             default:
