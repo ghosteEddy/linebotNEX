@@ -12,6 +12,7 @@ export type Event = {
     source: Source;
     replyToken?: string;
     mode?: string;
+    postback?: { data: string }
 }
 
 export type DeliveryContext = {
