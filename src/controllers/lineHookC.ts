@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import validator from '../utils/validator'
 import lineHookS from '../services/lineHookS'
 import { LineWebhook } from '../models/linehookT'
+import lMessage from '../services/lineMessageS'
 
 
 const lineHook = async (req: Request, res: Response, next: NextFunction) => {
