@@ -35,6 +35,7 @@ const lineHook = async (req: Request, res: Response, next: NextFunction) => {
                     break;
                 case "follow":
                     lineHookS.logActivity(bid, oaBid, "follow")
+                    lMessage.replyPreRegisterForm(String(data.events[0].replyToken), lineUser)
                     // do some follow such as send flex message
                     break
                 case "unfollow":
