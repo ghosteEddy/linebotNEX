@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "bin": "dist/server.js",
+  "pkg": {
+    "outputPath": "build"
+  },
   "scripts": {
     "start": "node ./dist/server.js",
     "build": "npx tsc --extendedDiagnostics --pretty",
     "adjust": "npm run build && npm start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "pkg ."
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +21,8 @@
     "express": "^4.18.2",
     "knex": "^2.4.2",
     "mysql": "^2.18.1",
+    "pkg": "^5.8.1",
+    "superagent": "^8.0.9",
     "winston": "^3.9.0"
   },
   "devDependencies": {
