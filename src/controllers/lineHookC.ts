@@ -30,11 +30,7 @@ const lineHook = async (req: Request, res: Response, next: NextFunction) => {
         return
     }
 
-
     if (await validator.verifyLineWebhookSignature(req) == true) {
-
-
-
         const lineUser: string = data.events[0].source.userId
         const bid: Buffer = await lineHookS.userHandler(lineUser)
 
@@ -60,8 +56,6 @@ const lineHook = async (req: Request, res: Response, next: NextFunction) => {
                     case "pre-register":
                         lMessage.replyPreRegisterForm(String(data.events[0].replyToken), lineUser)
                 }
-
-                // assign approrpriately
                 break
             default:
                 console.info(`web hook event type not supported: ${event}`)
