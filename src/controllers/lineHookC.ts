@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import validator from '../utils/validator'
 import lineHookS from '../services/lineHookS'
 import { LineWebhook } from '../models/linehookT'
+import lMessage from '../services/lineMessageS'
 
 
 const lineHook = async (req: Request, res: Response, next: NextFunction) => {
@@ -51,7 +52,7 @@ const lineHook = async (req: Request, res: Response, next: NextFunction) => {
                 // do some unfollow
                 break
             case "postback":
-                lineHookS.logActivity(bid, "postback")
+                lineHookS.logActivity(bid, oaBid, "postback")
 
 
                 // TODO: seperate this later
