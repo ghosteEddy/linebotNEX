@@ -1,13 +1,14 @@
 import { createHmac } from "crypto";
 import { Request } from "express";
+import db from "../services/db"
 
-const verifyLineWebhookSignature = async (req: Request) => {
+const verifyLineWebhookSignature = async (req: Request, messagingSecret: string | null = null) => {
     let channelSecret: string
     const body = JSON.stringify(req.body)
-    if (process.env.NODE_ENV == "development") {
+    if (process.env.NODE_ENV == "development" && messagingSecret === null) {
         channelSecret = String(process.env.MESSAGING_SECRET_KEY)
     } else {
-        channelSecret = '1234'
+        channelSecret = String(messagingSecret)
         // todo get client from database
     }
     const hash = createHmac("SHA256", channelSecret)
@@ -20,6 +21,10 @@ const verifyLineWebhookSignature = async (req: Request) => {
     } else {
         return false
     }
+}
+
+const verifyOAClient = async (req: Request) => {
+    let channel
 }
 
 export default { verifyLineWebhookSignature }

@@ -1,5 +1,16 @@
 import db from '../services/db'
 
+const checkOAClient = async (oaId: string) => {
+    const oaBids = await db('oa_clients')
+        .select('line_oa_id_bin', 'line_message_token', 'line_message_secret')
+        .where('line_oa_uid', oaId)
+    if (oaBids.length > 0) {
+        return [true, oaBids[0]]
+    } else {
+        return [false, null]
+    }
+}
+
 const userHandler = async (lineId: string) => {
     // find if user exist create new if no record
     const result = await db('line_users').where('line_uid', lineId)
@@ -12,9 +23,10 @@ const userHandler = async (lineId: string) => {
     }
 }
 
-const logActivity = async (userBid, activity: string) => {
+const logActivity = async (userBid, oaBid, activity: string) => {
     await db("line_user_activities").insert({
-        "line_uid_bin": userBid,
+        "line_oa_id_bin": oaBid,
+        "line_id_bin": userBid,
         "activity": activity
     })
 }
@@ -34,5 +46,6 @@ const createNewUser = async (lineId: string) => {
 
 export default {
     userHandler,
-    logActivity
+    logActivity,
+    checkOAClient
 }
