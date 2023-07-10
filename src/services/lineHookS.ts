@@ -1,4 +1,5 @@
 import db from '../services/db'
+import lineReq from '../utils/lineReq'
 
 const checkOAClient = async (oaId: string) => {
     const oaBids = await db('oa_clients')
@@ -11,14 +12,15 @@ const checkOAClient = async (oaId: string) => {
     }
 }
 
-const userHandler = async (lineId: string) => {
+const userHandler = async (lineId: string, channelAccessToken: string) => {
     // find if user exist create new if no record
     const result = await db('line_users').where('line_uid', lineId)
     if (result.length > 0) {
         // pass
         return result[0]["line_id_bin"]
     } else {
-        const newUserBid = await createNewUser(lineId)
+        const displayname = await lineReq.getUserName(lineId, channelAccessToken)
+        const newUserBid = await createNewUser(lineId, displayname)
         return newUserBid
     }
 }
@@ -32,13 +34,14 @@ const logActivity = async (userBid, oaBid, activity: string) => {
 }
 
 // TODO: If project got larger move these stuff to model / class
-const createNewUser = async (lineId: string) => {
-    const fullId = lineId
+const createNewUser = async (lineId: string, displayname: string) => {
     const truncated = lineId.substring(1)
     const result = await db("line_users").insert({
         "line_uid": lineId,
-        "line_id": truncated
+        "line_id": truncated,
+        "initial_line_display_name": displayname
     })
+    // mysql no natively support return id on insert
     const bid = await db('line_users').where('line_uid', lineId)
     console.info(`Congrats you got new user`)
     return bid[0].line_id_bin

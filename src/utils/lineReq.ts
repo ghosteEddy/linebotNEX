@@ -15,4 +15,12 @@ const replyMessage = async (replyToken: string, channelAccessToken: string, mess
         .send(postData)
         .catch(console.error)
 }
-export default { replyMessage }
+
+const getUserName = async (userId: string, channelAccessToken: string) => {
+    const result = await agent.get(`https://api.line.me/v2/bot/profile/${userId}`)
+        .set("Authorization", `Bearer ${channelAccessToken}`)
+        .send()
+        .catch(console.error)
+    return result.body["displayName"]
+}
+export default { replyMessage, getUserName }

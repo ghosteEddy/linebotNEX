@@ -23,42 +23,41 @@ const lineHook = async (req: Request, res: Response, next: NextFunction) => {
             next()
             return
         }
+        if (await validator.verifyLineWebhookSignature(req, oaSecret) == true) {
+            const lineUser: string = data.events[0].source.userId
+            const bid: Buffer = await lineHookS.userHandler(lineUser, oaToken)
 
+            const event: string = data.events[0].type
+            switch (event) {
+                case "message":
+                    lineHookS.logActivity(bid, oaBid, "message")
+                    break;
+                case "follow":
+                    lineHookS.logActivity(bid, oaBid, "follow")
+                    // do some follow such as send flex message
+                    break
+                case "unfollow":
+                    lineHookS.logActivity(bid, oaBid, "unfollow")
+                    // do some unfollow
+                    break
+                case "postback":
+                    lineHookS.logActivity(bid, oaBid, "postback")
+                    // assign approrpriately
+                    break
+                default:
+                    console.info(`web hook event type not supported: ${event}`)
+                    break;
+            }
+            res.status(200).send('HookReceive')
+        } else {
+            res.status(400).send('H@@krec3ive')
+        }
     } catch (error) {
         next(error)
         return
     }
-
-    if (await validator.verifyLineWebhookSignature(req, oaSecret) == true) {
-        const lineUser: string = data.events[0].source.userId
-        const bid: Buffer = await lineHookS.userHandler(lineUser)
-
-        const event: string = data.events[0].type
-        switch (event) {
-            case "message":
-                lineHookS.logActivity(bid, oaBid, "message")
-                break;
-            case "follow":
-                lineHookS.logActivity(bid, oaBid, "follow")
-                // do some follow such as send flex message
-                break
-            case "unfollow":
-                lineHookS.logActivity(bid, oaBid, "unfollow")
-                // do some unfollow
-                break
-            case "postback":
-                lineHookS.logActivity(bid, oaBid, "postback")
-                // assign approrpriately
-                break
-            default:
-                console.info(`web hook event type not supported: ${event}`)
-                break;
-        }
-        res.status(200).send('HookReceive')
-    } else {
-        res.status(400).send('H@@krec3ive')
-    }
     next()
+    return
 }
 export default {
     lineHook
