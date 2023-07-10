@@ -30,7 +30,7 @@ const replyPreRegisterForm = async (replyToken: string, lineId: string) => {
     }
     const message = {
         type: "flex",
-        altText: `Pre-Register Form https://forms.clickup.com/3669379/f/3fzc3-33522/VSEIZR8TAHQ3JXWAE3?Line%20ID=${lineId}`,
+        altText: `Pre-Register Form`,
         contents: flex
     }
     await lineReq.replyMessage(replyToken, String(process.env.MESSAGING_TOKEN), [message])
