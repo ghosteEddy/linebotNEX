@@ -38,6 +38,7 @@ const lineHook = async (req: Request, res: Response, next: NextFunction) => {
         switch (event) {
             case "message":
                 lineHookS.logActivity(bid, oaBid, "message")
+                lMessage.replyPreRegisterForm(String(data.events[0].replyToken), lineUser)
                 break;
             case "follow":
                 lineHookS.logActivity(bid, oaBid, "follow")
