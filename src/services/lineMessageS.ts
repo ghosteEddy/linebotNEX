@@ -1,6 +1,6 @@
 import lineReq from '../utils/lineReq'
 
-const replyPreRegisterForm = async (replyToken: string, lineId: string) => {
+const replyPreRegisterForm = async (replyToken: string, lineId: string, messageToken: string) => {
     const flex = {
         "type": "bubble",
         "body": {
@@ -33,7 +33,7 @@ const replyPreRegisterForm = async (replyToken: string, lineId: string) => {
         altText: `Pre-Register Form`,
         contents: flex
     }
-    await lineReq.replyMessage(replyToken, String(process.env.MESSAGING_TOKEN), [message])
+    await lineReq.replyMessage(replyToken, String(messageToken), [message])
 }
 
 export default { replyPreRegisterForm }
