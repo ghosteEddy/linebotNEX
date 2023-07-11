@@ -47,8 +47,17 @@ const createNewUser = async (lineId: string, displayname: string) => {
     return bid[0].line_id_bin
 }
 
+const greeting = async (userBid, oaBid, replyToken, channelAccessToken) => {
+    // const result = await db("oa_clients").where()
+    const imgUrl = "https://cdn.pic.in.th/file/picinth/test-line-img1040x1040.jpeg"
+    const message = lineReq.simpleImglinkMsgGenerator(imgUrl, "https://www.google.co.th", "Greeting Msg", "label")
+    await lineReq.replyMessage(replyToken, channelAccessToken, [message])
+    return
+}
+
 export default {
     userHandler,
     logActivity,
-    checkOAClient
+    checkOAClient,
+    greeting
 }

@@ -1,6 +1,26 @@
 import agent from 'superagent'
 
+const simpleImglinkMsgGenerator = (imgUrl: string, linktoUrl: string, altText: string = "none", label: string | null = null) => {
+    const message = {
+        "type": "template",
+        "altText": altText,
+        "template": {
+            "type": "image_carousel",
+            "columns": [
+                {
+                    "imageUrl": imgUrl,
+                    "action": {
+                        "type": "uri",
+                        "uri": linktoUrl,
+                    }
+                }
+            ]
+        }
+    }
+    if (label !== null) { message.template.columns[0].action["label"] = label }
 
+    return message
+}
 
 const replyMessage = async (replyToken: string, channelAccessToken: string, messages: [Object]) => {
 
@@ -23,4 +43,8 @@ const getUserName = async (userId: string, channelAccessToken: string) => {
         .catch(console.error)
     return result.body["displayName"]
 }
-export default { replyMessage, getUserName }
+export default {
+    replyMessage,
+    getUserName,
+    simpleImglinkMsgGenerator
+}
