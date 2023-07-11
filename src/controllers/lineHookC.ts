@@ -41,19 +41,19 @@ const lineHook = async (req: Request, res: Response, next: NextFunction) => {
             const event: string = data.events[0].type
             switch (event) {
                 case "message":
-                    if (oaLogCfg.logMessage) lineHookS.logActivity(bid, oaBid, oaBid, "message")
+                    if (oaLogCfg.logMessage) lineHookS.logActivity(bid, oaBid, "message")
                     break;
                 case "follow":
-                    if (oaLogCfg.logFollow) lineHookS.logActivity(bid, oaBid, oaBid, "follow")
+                    if (oaLogCfg.logFollow) lineHookS.logActivity(bid, oaBid, "follow")
                     lMessage.replyPreRegisterForm(String(data.events[0].replyToken), lineUser, oaToken)
                     // do some follow such as send flex message
                     break
                 case "unfollow":
-                    if (oaLogCfg.logUnfollow) lineHookS.logActivity(bid, oaBid, oaBid, "unfollow")
+                    if (oaLogCfg.logUnfollow) lineHookS.logActivity(bid, oaBid, "unfollow")
                     // do some unfollow
                     break
                 case "postback":
-                    if (oaLogCfg.logPostback) lineHookS.logActivity(bid, oaBid, oaBid, "postback", data.events[0].postback?.data)
+                    if (oaLogCfg.logPostback) lineHookS.logActivity(bid, oaBid, "postback", data.events[0].postback?.data)
                     // assign approrpriately
                     // TODO: seperate this later
                     switch (data.events[0].postback?.data) {
@@ -73,13 +73,8 @@ const lineHook = async (req: Request, res: Response, next: NextFunction) => {
         next(error)
         return
     }
-} catch (error) {
-    next(error)
-    return
 }
-next()
-return
-}
+
 export default {
     lineHook
 }
