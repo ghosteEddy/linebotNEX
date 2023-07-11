@@ -3,7 +3,6 @@ import lineReq from '../utils/lineReq'
 
 const checkOAClient = async (oaId: string) => {
     const oaBids = await db('oa_clients')
-        .select('line_oa_id_bin', 'line_message_token', 'line_message_secret')
         .where('line_oa_uid', oaId)
     if (oaBids.length > 0) {
         return [true, oaBids[0]]
@@ -25,11 +24,12 @@ const userHandler = async (lineId: string, channelAccessToken: string) => {
     }
 }
 
-const logActivity = async (userBid, oaBid, activity: string) => {
+const logActivity = async (userBid, oaBid, activity: string, activityLabel: string | null = null) => {
     await db("line_user_activities").insert({
         "line_oa_id_bin": oaBid,
         "line_id_bin": userBid,
-        "activity": activity
+        "activity": activity,
+        "activity_label": activityLabel
     })
 }
 
