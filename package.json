@@ -5,7 +5,10 @@
   "main": "server.js",
   "bin": "dist/server.js",
   "pkg": {
-    "outputPath": "build"
+    "outputPath": "build",
+    "assets": [
+      "dist/static"
+    ]
   },
   "scripts": {
     "start": "node ./dist/server.js",
