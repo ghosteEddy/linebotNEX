@@ -1,5 +1,6 @@
 // ---3rd party modules
 import express from 'express';
+import path from 'path';
 
 // ---middlewares
 import errorHandler from './middlewares/errorHandler';
@@ -18,6 +19,9 @@ app.use(reqLogger)
 // routers
 app.use('/', checkR)
 app.use('/line', lineR)
+app.get('/page/:page', function (req, res) {
+    res.sendFile(path.join(String(process.env.WORKING_DIR), `/static/html/${req.params.page}.html`));
+});
 
 // ---post - middlewares
 

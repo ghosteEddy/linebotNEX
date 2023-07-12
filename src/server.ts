@@ -1,6 +1,7 @@
 //  load env first of all
 import dotenv from 'dotenv'
 dotenv.config()
+process.env.WORKING_DIR = __dirname
 
 import app from './app'
 const port = process.env.PORT || '3444'

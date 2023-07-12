@@ -9,10 +9,10 @@
   },
   "scripts": {
     "start": "node ./dist/server.js",
-    "build": "npx tsc --extendedDiagnostics --pretty",
+    "build": "npx tsc --extendedDiagnostics --pretty && cp -r ./static ./dist",
     "adjust": "npm run build && npm start",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "package": "pkg ."
+    "package": "pkg . && cp -r ./static ./build"
   },
   "author": "",
   "license": "ISC",
