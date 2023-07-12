@@ -46,7 +46,7 @@ const lineHook = async (req: Request, res: Response, next: NextFunction) => {
                 case "follow":
                     if (oaLogCfg.logFollow) lineHookS.logActivity(bid, oaBid, "follow")
                     // do some follow such as send flex message
-                    lineHookS.greeting(bid, oaBid, data.events[0].replyToken, oaToken)
+                    if (oaResult[1].greeting_message != null) lineHookS.greeting(lineUser, oaResult[1].greeting_message, data.events[0].replyToken, oaToken)
                     break
                 case "unfollow":
                     if (oaLogCfg.logUnfollow) lineHookS.logActivity(bid, oaBid, "unfollow")

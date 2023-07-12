@@ -1,4 +1,21 @@
 import agent from 'superagent'
+import { MessageBuilder } from '../models/messageBuilderT'
+
+const lineMsgGenerator = (msgBuilder: MessageBuilder) => {
+    switch (msgBuilder.type) {
+        case ("simpleImgLink"):
+            const message = simpleImglinkMsgGenerator(
+                msgBuilder.imgs[0].url,
+                String(msgBuilder.targetUrl),
+                msgBuilder.imgs[0].altText,
+                msgBuilder.imgs[0].label
+            )
+            return message
+
+        default:
+            return {}
+    }
+}
 
 const simpleImglinkMsgGenerator = (imgUrl: string, linktoUrl: string, altText: string = "none", label: string | null = null) => {
     const message = {
@@ -46,5 +63,5 @@ const getUserName = async (userId: string, channelAccessToken: string) => {
 export default {
     replyMessage,
     getUserName,
-    simpleImglinkMsgGenerator
+    lineMsgGenerator
 }

@@ -47,10 +47,12 @@ const createNewUser = async (lineId: string, displayname: string) => {
     return bid[0].line_id_bin
 }
 
-const greeting = async (userBid, oaBid, replyToken, channelAccessToken) => {
-    // const result = await db("oa_clients").where()
-    const imgUrl = "https://cdn.pic.in.th/file/picinth/test-line-img1040x1040.jpeg"
-    const message = lineReq.simpleImglinkMsgGenerator(imgUrl, "https://www.google.co.th", "Greeting Msg", "label")
+const greeting = async (userId, messageBid, replyToken, channelAccessToken) => {
+    // BECAREFUL: will always send user id as query parameter
+    const result = await db("line_messages").where("message_id_bin", messageBid)
+    const msgBuilder = JSON.parse(result[0].message_json_spec)
+    msgBuilder.targetUrl = `${msgBuilder.targetUrl}?line%20ID=${userId}`
+    const message = lineReq.lineMsgGenerator(msgBuilder)
     await lineReq.replyMessage(replyToken, channelAccessToken, [message])
     return
 }
