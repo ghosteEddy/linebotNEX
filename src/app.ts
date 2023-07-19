@@ -15,7 +15,7 @@ import lineR from './routes/lineR'
 const app = express()
 
 // ---pre - middlewares
-app.use(helmet())
+// app.use(helmet())
 app.use(express.json())
 app.use(reqLogger)
 // routers
