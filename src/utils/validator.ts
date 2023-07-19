@@ -1,6 +1,5 @@
 import { createHmac } from "crypto";
 import { Request } from "express";
-import db from "../services/db"
 
 const verifyLineWebhookSignature = async (req: Request, messagingSecret: string | null = null) => {
     let channelSecret: string

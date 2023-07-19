@@ -8,7 +8,7 @@ import reqLogger from './middlewares/reqLogger';
 import resLogger from './middlewares/resLogger';
 
 // ---route
-import checkR from './routes/checkR'
+import checkR from './routes/universalR'
 import lineR from './routes/lineR'
 
 const app = express()
