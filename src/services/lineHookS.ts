@@ -11,15 +11,19 @@ const checkOAClient = async (oaId: string) => {
     }
 }
 
-const userHandler = async (lineId: string, channelAccessToken: string) => {
+const userHandler = async (lineId: string, oaBid, channelAccessToken: string) => {
     // find if user exist create new if no record
-    const result = await db('line_users').where('line_uid', lineId)
+
+    const result = await db('line_users').where({
+        'line_uid': lineId,
+        'oa_id_bin': oaBid
+    })
     if (result.length > 0) {
         // pass
         return result[0]["line_id_bin"]
     } else {
         const displayname = await lineReq.getUserName(lineId, channelAccessToken)
-        const newUserBid = await createNewUser(lineId, displayname)
+        const newUserBid = await createNewUser(lineId, oaBid, displayname)
         return newUserBid
     }
 }
@@ -34,9 +38,10 @@ const logActivity = async (userBid, oaBid, activity: string, activityLabel: stri
 }
 
 // TODO: If project got larger move these stuff to model / class
-const createNewUser = async (lineId: string, displayname: string) => {
+const createNewUser = async (lineId: string, oaBid, displayname: string) => {
     const truncated = lineId.substring(1)
     const result = await db("line_users").insert({
+        "oa_id_bin": oaBid,
         "line_uid": lineId,
         "line_id": truncated,
         "initial_line_display_name": displayname
