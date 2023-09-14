@@ -71,6 +71,37 @@ const lineHook = async (req: Request, res: Response, next: NextFunction) => {
     next()
     return
 }
+
+const checkAndAddUser = async (req: Request, res: Response, next: NextFunction) => {
+    const data = req.body
+    let oaBid: Buffer
+    let oaSecret: string
+    let oaToken: string
+    try {
+        let user = await lineHookS.checkUser(data.userId, data.oaId)
+        if (user[0] == true) {
+            res.status(200).send('User Exists')
+        } else {
+            const oaResult = await lineHookS.checkOAClient(data.oaId)
+            if (oaResult[0] === true) {
+                oaBid = oaResult[1]["line_oa_id_bin"]
+                oaSecret = oaResult[1]["line_message_secret"]
+                oaToken = oaResult[1]["line_message_token"]
+
+                lineHookS.userHandler(data.userId, oaBid, oaToken)
+            } else {
+                res.status(400).send('out of service')
+            }
+        }
+    } catch (error) {
+        next(error)
+        return
+    }
+    next()
+    return
+}
+
 export default {
-    lineHook
+    lineHook,
+    checkAndAddUser
 }

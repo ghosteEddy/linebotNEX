@@ -10,6 +10,18 @@ const checkOAClient = async (oaId: string) => {
         return [false, null]
     }
 }
+const checkUser = async (lineId: string, oaUid: string) => {
+    const result = await db('line_users').join('oa_clients', 'line_users.oa_id_bin', '=', 'oa_clients.line_oa_id_bin')
+        .select("*")
+        .where('line_users.line_uid', lineId)
+        .andWhere('oa_clients.line_oa_uid', oaUid)
+
+    if (result.length > 0) {
+        return [true, result[0]]
+    } else {
+        return [false, null]
+    }
+}
 
 const userHandler = async (lineId: string, oaBid, channelAccessToken: string) => {
     // find if user exist create new if no record
@@ -22,7 +34,7 @@ const userHandler = async (lineId: string, oaBid, channelAccessToken: string) =>
         // pass
         return result[0]["line_id_bin"]
     } else {
-        const displayname = await lineReq.getUserName(lineId, channelAccessToken)
+        const displayname: string = await lineReq.getUserName(lineId, channelAccessToken)
         const newUserBid = await createNewUser(lineId, oaBid, displayname)
         return newUserBid
     }
@@ -66,5 +78,6 @@ export default {
     userHandler,
     logActivity,
     checkOAClient,
-    greeting
+    greeting,
+    checkUser
 }
