@@ -34,9 +34,17 @@ const userHandler = async (lineId: string, oaBid, channelAccessToken: string) =>
         // pass
         return result[0]["line_id_bin"]
     } else {
-        const displayname: string = await lineReq.getUserName(lineId, channelAccessToken)
-        const newUserBid = await createNewUser(lineId, oaBid, displayname)
-        return newUserBid
+        try {
+            const displayname: string = await lineReq.getUserName(lineId, channelAccessToken)
+            const newUserBid = await createNewUser(lineId, oaBid, displayname)
+            return newUserBid
+        } catch {
+            console.info("Cannot create user with name trying to insert without it")
+            const newUserBid = await createNewUser(lineId, oaBid, "")
+            return newUserBid
+        }
+
+
     }
 }
 
