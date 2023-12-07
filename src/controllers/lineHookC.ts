@@ -30,7 +30,8 @@ const lineHook = async (req: Request, res: Response, next: NextFunction) => {
             oaLogCfg.logPostback = oaResult[1]["log_postback"]
 
         } else {
-            res.status(400).send('H@@krec3ive')
+            console.warn(`Someone hook us to : ${data.destination}`)
+            res.status(406).send('H@@krec3ive')
             next()
             return
         }
@@ -62,9 +63,12 @@ const lineHook = async (req: Request, res: Response, next: NextFunction) => {
             }
             res.status(200).send('HookReceive')
         } else {
-            res.status(400).send('H@@krec3ive')
+            console.warn(`Validation error from hook ${oaBid} `)
+            res.status(406).send('H@@krec3ive')
         }
     } catch (error) {
+        // Overide to give line a 200 response at test webhook
+        res.status(200).send('Yaya I heard you')
         next(error)
         return
     }
@@ -90,7 +94,7 @@ const checkAndAddUser = async (req: Request, res: Response, next: NextFunction) 
 
                 lineHookS.userHandler(data.userId, oaBid, oaToken)
             } else {
-                res.status(400).send('out of service')
+                res.status(406).send('out of service')
             }
         }
     } catch (error) {
